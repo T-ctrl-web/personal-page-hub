@@ -20,7 +20,7 @@ export default {
       group: '基本信息',
       fields: [
         { key: 'name', label: '姓名' },
-        { key: 'avatar', label: '头像图片 URL', hint: '选填；填了显示照片，留空显示抽象几何头像' },
+        { key: 'avatar', label: '头像图片', type: 'image', hint: '选填；填了显示照片，留空显示抽象几何头像' },
         { key: 'role', label: '一句话定位' },
         { key: 'badge', label: '徽章/标签', hint: '如：全栈工程师 · 深圳' },
         { key: 'desc', label: '自我介绍（Hero）', type: 'textarea' },
@@ -69,7 +69,7 @@ export default {
         key: 'projects',
         itemLabel: '项目',
         fields: [
-          { key: 'cover', label: '封面图片 URL', hint: '选填；填了显示图片卡，留空显示纯文字' },
+          { key: 'cover', label: '封面图片', type: 'image', hint: '选填；填了显示图片卡，留空显示纯文字' },
           { key: 'title', label: '项目名称' },
           { key: 'year', label: '年份' },
           { key: 'desc', label: '描述', type: 'textarea' },
@@ -196,14 +196,23 @@ export default {
       <span class="count">${String((d.projects || []).length).padStart(2, '0')} 个</span>
     </div>
     <div class="projects-inner">
-      ${(d.projects || []).map((p) => `
-      <article class="project${p.cover && String(p.cover).trim() ? ' with-cover' : ''}">
-        ${p.cover && String(p.cover).trim() ? `<div class="project-cover"><img src="${esc(String(p.cover).trim())}" alt="${esc(p.title)} 封面" loading="lazy"></div>` : ''}
+      ${(() => {
+        const projects = d.projects || []
+        const anyCover = projects.some((p) => p && p.cover && String(p.cover).trim())
+        return projects.map((p) => {
+          const hasCover = anyCover && p && p.cover && String(p.cover).trim()
+          return `
+      <article class="project${anyCover ? ' with-cover' : ''}">
+        ${hasCover
+          ? `<div class="project-cover${p.cover ? '' : ' placeholder'}"${p.cover ? '' : ' aria-hidden="true"'}><img src="${esc(String(p.cover).trim())}" alt="${esc(p.title)} 封面" loading="lazy" onerror="this.parentNode.classList.add('broken')"></div>`
+          : `<div class="project-cover placeholder" aria-hidden="true"></div>`}
         <span class="project-year">${esc(p.year)}</span>
         <h3>${esc(p.title)}</h3>
         <p>${esc(p.desc)}</p>
         <div class="tags">${terms(p.stack)}</div>
-      </article>`).join('')}
+      </article>`
+        }).join('')
+      })()}
     </div>
   </section>
 
@@ -352,6 +361,9 @@ ${avatarGeoCss('avatar')}
 .project:hover{transform:translateY(-3px);box-shadow:var(--shadow-2);border-color:var(--border-2)}
 .project-cover{margin:-22px -22px 16px;border-radius:var(--radius-md) var(--radius-md) 0 0;overflow:hidden;border-bottom:1px solid var(--border)}
 .project-cover img{display:block;width:100%;height:132px;object-fit:cover}
+.project-cover.placeholder{background:linear-gradient(135deg,var(--bg-2),var(--card));height:132px}
+.project-cover.broken{background:var(--bg-2)}
+.project-cover.broken img{display:none}
 .project-year{font-family:var(--font-mono);font-size:12.5px;font-weight:600;color:var(--primary);letter-spacing:1px;margin-bottom:10px;font-variant-numeric:tabular-nums}
 .project h3{font-family:var(--font-display);font-size:17px;font-weight:700;margin-bottom:8px;letter-spacing:-.2px}
 .project p{font-size:14.5px;line-height:1.7;color:var(--fg-2);margin-bottom:14px;flex:1}

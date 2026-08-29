@@ -11,6 +11,40 @@ export function esc(s) {
   return String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]))
 }
 
+/** 内联 favicon（data URI，导出 HTML 离线可用）——紫色渐变字母标 */
+const FAVICON_SVG = `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6D5BFF"/><stop offset="1" stop-color="#5B8DEF"/></linearGradient></defs><rect width="64" height="64" rx="14" fill="url(#g)"/><path d="M20 45 V27 l7 9 7-9 v18" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>`)}`
+
+/**
+ * 从模板数据中提取社交卡片信息（数据字段约定：name/role/desc/avatar/projects[].cover）
+ * og:image 优先级：第一张项目封面 → 头像 → 无
+ */
+function extractSocialMeta(data) {
+  const d = data || {}
+  const name = d.name || d.basic?.name || ''
+  const role = d.role || d.tagline || d.basic?.role || ''
+  const desc = d.desc || d.intro || d.basic?.desc || (Array.isArray(d.about) ? d.about[0]?.text : '') || ''
+  const cover = (Array.isArray(d.projects) ? d.projects.find((p) => p && p.cover && String(p.cover).trim())?.cover : null) || ''
+  const avatar = d.avatar && String(d.avatar).trim() ? d.avatar : ''
+  const ogImage = (cover && String(cover).trim()) || avatar || ''
+  return { name, role, desc, ogImage }
+}
+
+/** 导出页社交卡片头部（og: + favicon）——用户作品页被分享时不再是一行裸标题 */
+function socialMetaBlock(template, data) {
+  const { name, role, desc, ogImage } = extractSocialMeta(data)
+  const fullTitle = `${name || template.name || '我的主页'}${role ? ' · ' + role : ''}`
+  const meta = [
+    `<meta property="og:type" content="profile">`,
+    `<meta property="og:site_name" content="PersonalPage Hub">`,
+    `<meta property="og:title" content="${esc(fullTitle)}">`,
+    desc && `<meta property="og:description" content="${esc(String(desc).slice(0, 140))}">`,
+    ogImage && `<meta property="og:image" content="${esc(String(ogImage))}">`,
+    `<meta name="twitter:card" content="summary_large_image">`,
+    `<link rel="icon" href="${FAVICON_SVG}">`,
+  ].filter(Boolean)
+  return meta.join('\n')
+}
+
 export function buildTemplateHtml(template, data) {
   const title = `${data?.name || data?.basic?.name || template.name || '我的主页'} · ${template.name}`
   // H-3：css/js 做标签转义，防止 </style> / </script> 打断注入
@@ -37,6 +71,7 @@ export function buildTemplateHtml(template, data) {
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="${esc(title)}">
 <title>${esc(title)}</title>
+${socialMetaBlock(template, data)}
 ${sharedHeadBlock()}
 <style>${safeCss}</style>
 </head>

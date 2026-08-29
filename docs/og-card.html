@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { width: 1200px; height: 630px; overflow: hidden; font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif; background: #0E1024; color: #fff; display: flex; }
+  .left { flex: 1.05; padding: 64px 56px; display: flex; flex-direction: column; justify-content: center; position: relative; }
+  .logo { display: inline-flex; align-items: center; gap: 12px; margin-bottom: 28px; }
+  .logo-mark { width: 38px; height: 38px; border-radius: 10px; background: linear-gradient(135deg, #6D5BFF, #5B8DEF); display: grid; place-items: center; font-weight: 800; font-size: 19px; color: #fff; }
+  .logo-text { font-size: 15px; font-weight: 700; letter-spacing: .4px; color: rgba(255,255,255,.85); }
+  .logo-text b { color: #8B9DFF; }
+  h1 { font-size: 44px; font-weight: 800; line-height: 1.22; letter-spacing: .5px; margin-bottom: 18px; }
+  h1 .grad { background: linear-gradient(92deg, #8B9DFF, #6D5BFF 45%, #F472B6); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .sub { font-size: 18px; line-height: 1.7; color: rgba(255,255,255,.68); max-width: 24em; margin-bottom: 30px; }
+  .tags { display: flex; gap: 10px; flex-wrap: wrap; }
+  .tag { font-size: 12.5px; font-family: 'JetBrains Mono', monospace; color: #C7CDFF; border: 1px solid rgba(139,157,255,.35); background: rgba(109,91,255,.14); padding: 6px 14px; border-radius: 999px; }
+  .right { flex: 1; position: relative; margin: 26px 26px 26px 0; border-radius: 18px; overflow: hidden; border: 1px solid rgba(255,255,255,.12); box-shadow: 0 24px 60px rgba(0,0,0,.45); }
+  .right img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .glow { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(500px 300px at 20% 0%, rgba(109,91,255,.25), transparent 60%), radial-gradient(420px 260px at 100% 100%, rgba(244,114,182,.14), transparent 60%); }
+</style>
+</head>
+<body>
+  <div class="left">
+    <div class="logo"><span class="logo-mark">P</span><span class="logo-text">PersonalPage <b>Hub</b></span></div>
+    <h1>几秒钟，拥有你的<br><span class="grad">个人主页</span></h1>
+    <p class="sub">9 大专业设计风格模板 · AI 一句话定制生成<br>挑模板 → 在线编辑 → 实时预览 → 一键下载独立 HTML</p>
+    <div class="tags"><span>免费 · 无需注册</span><span>数据全在本地</span><span>AI 专属定制</span></div>
+  </div>
+  <div class="right">
+    <img src="./screenshot-market.png" alt="模板市场预览">
+  </div>
+  <div class="glow"></div>
+</body>
+</html>

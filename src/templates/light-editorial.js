@@ -59,7 +59,7 @@ export default {
         key: 'projects',
         itemLabel: '项目',
         fields: [
-          { key: 'cover', label: '封面图片 URL', hint: '选填；填了显示图片卡，留空显示纯文字' },
+          { key: 'cover', label: '封面图片', type: 'image', hint: '选填；填了显示图片卡，留空显示纯文字' },
           { key: 'title', label: '项目名称' },
           { key: 'year', label: '年份 / 标签' },
           { key: 'desc', label: '描述', type: 'textarea' },
@@ -173,16 +173,25 @@ export default {
   <section id="works" class="sec">
     <div class="container">
       <div class="sec-head"><span class="num">03</span><h2>作品</h2></div>
-      <div class="works">${(d.projects || []).map((p, i) => `
-        <article class="work${p.cover && String(p.cover).trim() ? ' with-cover' : ''}">
+      <div class="works">${(() => {
+        const projects = d.projects || []
+        const anyCover = projects.some((p) => p && p.cover && String(p.cover).trim())
+        return projects.map((p, i) => {
+          const hasCover = anyCover && p && p.cover && String(p.cover).trim()
+          return `
+        <article class="work${anyCover ? ' with-cover' : ''}">
           <div class="work-index">${String(i + 1).padStart(2, '0')}</div>
           <div class="work-body">
             <div class="work-meta"><span class="work-year">${esc(p.year)}</span><span class="tags">${terms(p.stack)}</span></div>
             <h3>${esc(p.title)}</h3>
             <p>${esc(p.desc)}</p>
           </div>
-          ${p.cover && String(p.cover).trim() ? `<div class="work-cover"><img src="${esc(String(p.cover).trim())}" alt="${esc(p.title)} 封面" loading="lazy"></div>` : ''}
-        </article>`).join('')}
+          ${hasCover
+            ? `<div class="work-cover${p.cover ? '' : ' placeholder'}"${p.cover ? '' : ' aria-hidden="true"'}><img src="${esc(String(p.cover).trim())}" alt="${esc(p.title)} 封面" loading="lazy" onerror="this.parentNode.classList.add('broken')"></div>`
+            : `<div class="work-cover placeholder" aria-hidden="true"></div>`}
+        </article>`
+        }).join('')
+      })()}
       </div>
     </div>
   </section>
@@ -260,6 +269,9 @@ a{color:inherit;text-decoration:none}
 .work-body p{color:var(--fg-2);font-size:15px}
 .work-cover{border-radius:6px;overflow:hidden;border:1px solid var(--border);box-shadow:var(--shadow-sm);background:var(--bg-2)}
 .work-cover img{display:block;width:100%;height:132px;object-fit:cover}
+.work-cover.placeholder{background:linear-gradient(135deg,var(--bg-2),var(--bg));min-height:132px}
+.work-cover.broken{background:var(--bg-2)}
+.work-cover.broken img{display:none}
 .timeline{border-top:1px solid var(--border)}
 .tl{display:grid;grid-template-columns:180px 1fr;gap:20px;padding:24px 0;border-bottom:1px solid var(--border)}
 .tl-when{font-family:var(--font-display);font-style:italic;color:var(--primary);font-size:15px}

@@ -21,7 +21,7 @@ export default {
       group: '基本信息',
       fields: [
         { key: 'name', label: '姓名' },
-        { key: 'avatar', label: '头像图片 URL', hint: '选填；填了显示照片，留空显示抽象几何头像' },
+        { key: 'avatar', label: '头像图片', type: 'image', hint: '选填；填了显示照片，留空显示抽象几何头像' },
         { key: 'role', label: '一句话定位' },
         { key: 'badge', label: '徽章/标签', hint: '如：独立品牌主理人 · 现居成都' },
         { key: 'desc', label: '自我介绍（Hero）', type: 'textarea' },
@@ -65,7 +65,7 @@ export default {
         key: 'projects',
         itemLabel: '项目',
         fields: [
-          { key: 'cover', label: '封面图片 URL', hint: '选填；填了显示图片卡，留空显示纯文字' },
+          { key: 'cover', label: '封面图片', type: 'image', hint: '选填；填了显示图片卡，留空显示纯文字' },
           { key: 'title', label: '项目名称' },
           { key: 'year', label: '年份 / 标签' },
           { key: 'desc', label: '描述', type: 'textarea' },
@@ -204,16 +204,25 @@ export default {
         <h2>一些做过的项目</h2>
       </div>
       <div class="works">
-        ${(d.projects || []).map((p, i) => `
-        <article class="work${p.cover && String(p.cover).trim() ? ' with-cover' : ''}">
+        ${(() => {
+          const projects = d.projects || []
+          const anyCover = projects.some((p) => p && p.cover && String(p.cover).trim())
+          return projects.map((p, i) => {
+            const hasCover = anyCover && p && p.cover && String(p.cover).trim()
+            return `
+        <article class="work${anyCover ? ' with-cover' : ''}">
           <div class="work-num" aria-hidden="true">${String(i + 1).padStart(2, '0')}</div>
-          ${p.cover && String(p.cover).trim() ? `<div class="work-cover"><img src="${esc(String(p.cover).trim())}" alt="${esc(p.title)} 封面" loading="lazy"></div>` : ''}
+          ${hasCover
+            ? `<div class="work-cover${p.cover ? '' : ' placeholder'}"${p.cover ? '' : ' aria-hidden="true"'}><img src="${esc(String(p.cover).trim())}" alt="${esc(p.title)} 封面" loading="lazy" onerror="this.parentNode.classList.add('broken')"></div>`
+            : `<div class="work-cover placeholder" aria-hidden="true"></div>`}
           <div class="work-body">
             <div class="work-meta"><span class="work-year">${esc(p.year)}</span><span class="work-tags">${terms(p.stack)}</span></div>
             <h3>${esc(p.title)}</h3>
             <p>${esc(p.desc)}</p>
           </div>
-        </article>`).join('')}
+        </article>`
+          }).join('')
+        })()}
       </div>
     </div>
   </section>
@@ -304,6 +313,9 @@ ${avatarGeoCss('orb-avatar')}
 .work:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
 .work-cover{border-radius:var(--radius-md);overflow:hidden;border:1px solid var(--border)}
 .work-cover img{display:block;width:100%;height:132px;object-fit:cover}
+.work-cover.placeholder{background:linear-gradient(135deg,var(--bg-2),var(--card));min-height:132px}
+.work-cover.broken{background:var(--bg-2)}
+.work-cover.broken img{display:none}
 .work-num{font-family:var(--font-display);font-size:22px;color:var(--primary-soft);padding-top:2px}
 .work-meta{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:10px}
 .work-year{font-size:12.5px;font-weight:600;letter-spacing:1px;color:var(--primary-ink)}

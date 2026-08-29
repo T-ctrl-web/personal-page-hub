@@ -286,6 +286,11 @@ h1, h2, h3, h4 { font-family: var(--font-display); letter-spacing: .2px; }
   outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(109,91,255,.14); background: #fff;
 }
 .ed-field textarea { min-height: 76px; resize: vertical; }
+.ed-image { display: flex; flex-direction: column; gap: 8px; }
+.ed-image-preview {
+  width: 100%; max-height: 160px; object-fit: cover;
+  border-radius: var(--radius-md); border: 1px solid var(--border);
+}
 .ed-list-item { border: 1px solid var(--border); border-radius: var(--radius-md); padding: 13px; margin-bottom: 10px; background: #FCFCFE; position: relative; }
 .ed-list-item .del { position: absolute; top: 8px; right: 8px; font-size: 12px; color: var(--muted); padding: 3px 10px; border-radius: var(--radius-sm); }
 .ed-list-item .del:hover { color: var(--danger); background: var(--danger-soft); }

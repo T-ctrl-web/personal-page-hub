@@ -55,6 +55,20 @@ img{max-width:100%;height:auto}
 @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion: reduce){
   *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}
+}
+/* ===== 打印样式（作品集场景：投简历/存 PDF） ===== */
+@media print{
+  @page{margin:14mm}
+  body{background:#fff!important;color:#000!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  /* 隐藏导航、页脚装饰、装饰性元素 */
+  nav,.nav,.links,header,.hero-stamp,.band,.blob,.dot,.orb,.grad,footer,[aria-hidden="true"]{display:none!important}
+  section{break-inside:avoid;scroll-margin-top:0!important}
+  h1,h2,h3{break-after:avoid}
+  /* 链接后附 URL（简历打印可追溯来源） */
+  a[href^="http"]::after{content:" (" attr(href) ")";font-size:.82em;color:#555}
+  a{color:#000!important;text-decoration:none}
+  img{max-width:100%!important}
+  *{animation:none!important;transition:none!important}
 }`
 
 /** 注入到模板 HTML <head> 的完整字体 + 基线块 */
