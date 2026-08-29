@@ -30,3 +30,21 @@ export function removeMine(id) {
 export function getMine(id) {
   return loadMine().find((x) => x.id === id)
 }
+
+/* ============ 模板收藏（内置 + AI 模板通用） ============ */
+const FAV_KEY = 'pph-favorite-templates'
+
+export function loadFavorites() {
+  try { const v = JSON.parse(localStorage.getItem(FAV_KEY)); return Array.isArray(v) ? v : [] } catch { return [] }
+}
+export function isFavorite(id) {
+  return loadFavorites().includes(id)
+}
+export function toggleFavorite(id) {
+  const list = loadFavorites()
+  const idx = list.indexOf(id)
+  if (idx >= 0) list.splice(idx, 1)
+  else list.push(id)
+  localStorage.setItem(FAV_KEY, JSON.stringify(list))
+  return idx < 0
+}

@@ -2,10 +2,14 @@ import { useMemo, useState } from 'react'
 import { allTemplates, countBrokenOutputs, removeAllBrokenOutputs } from '../templates/index.js'
 import { downloadTemplate } from '../engine/export.js'
 import PreviewFrame from '../engine/PreviewFrame.jsx'
+import { loadFavorites, toggleFavorite } from '../store.js'
 
 export default function Market({ nav }) {
   const [cat, setCat] = useState('全部')
   const [style, setStyle] = useState('全部')
+  const [query, setQuery] = useState('')
+  const [onlyFav, setOnlyFav] = useState(false)
+  const [favs, setFavs] = useState(loadFavorites)
   const [previewId, setPreviewId] = useState(null)
   const [brokenN, setBrokenN] = useState(countBrokenOutputs)
 
@@ -14,12 +18,25 @@ export default function Market({ nav }) {
   const cats = ['全部', ...new Set(templates.map((t) => t.category))]
   const styles = ['全部', ...new Set(templates.map((t) => t.style))]
 
-  const list = useMemo(() => templates.filter((t) =>
-    (cat === '全部' || t.category === cat) && (style === '全部' || t.style === style)
-  ), [templates, cat, style])
+  const list = useMemo(() => {
+    const q = query.trim().toLowerCase()
+    return templates
+      .filter((t) =>
+        (cat === '全部' || t.category === cat) &&
+        (style === '全部' || t.style === style) &&
+        (!onlyFav || favs.includes(t.id)) &&
+        (q === '' || `${t.name} ${t.description} ${t.style} ${t.tagline || ''}`.toLowerCase().includes(q))
+      )
+      .sort((a, b) => (favs.includes(b.id) ? 1 : 0) - (favs.includes(a.id) ? 1 : 0)) // 收藏优先
+  }, [templates, cat, style, query, onlyFav, favs])
 
   const download = (t) => {
     downloadTemplate(t, structuredClone(t.defaults), `${t.id}.html`)
+  }
+
+  const onToggleFav = (e, id) => {
+    e.stopPropagation()
+    setFavs(toggleFavorite(id))
   }
 
   return (
@@ -32,7 +49,7 @@ export default function Market({ nav }) {
           <p className="sub">挑一个专业模板 → 在线编辑你的信息 → 实时预览 → 一键下载独立 HTML。或让 AI 为你定制一个专属模板。免费、无需注册、数据全在本地。</p>
           <div className="hero-stats">
             <div className="hs"><b>{templates.length}</b><span>可用模板</span></div>
-            <div className="hs"><b>{cats.length - 1}</b><span>用途分类</span></div>
+            <div className="hs"><b>{favs.length}</b><span>已收藏</span></div>
             <div className="hs"><b>{styles.length - 1}</b><span>视觉风格</span></div>
             <div className="hs"><b>AI</b><span>专属定制</span></div>
           </div>
@@ -63,8 +80,18 @@ export default function Market({ nav }) {
         </div>
       )}
 
-      {/* 筛选 */}
-      <div className="filters" style={{ marginTop: 24 }}>
+      {/* 搜索 + 筛选 */}
+      <div style={{ display: 'flex', gap: 12, marginTop: 24, flexWrap: 'wrap', alignItems: 'center' }}>
+        <input
+          type="search"
+          placeholder="🔍 搜索模板（名称 / 风格 / 描述）…"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          style={{ flex: 1, minWidth: 220, padding: '10px 16px', borderRadius: 999, border: '1px solid var(--border)', background: '#fff', fontSize: 14, outline: 'none' }}
+        />
+        <button className={`chip-btn ${onlyFav ? 'active' : ''}`} onClick={() => setOnlyFav(!onlyFav)}>⭐ 只看收藏（{favs.length}）</button>
+      </div>
+      <div className="filters" style={{ marginTop: 12 }}>
         <span className="fl">用途</span>
         {cats.map((c) => <button key={c} className={`chip-btn ${cat === c ? 'active' : ''}`} onClick={() => setCat(c)}>{c}</button>)}
         <span className="fl" style={{ marginLeft: 14 }}>风格</span>
@@ -82,6 +109,11 @@ export default function Market({ nav }) {
               </div>
               <span className="emoji" aria-hidden="true">{t.coverEmoji || '📄'}</span>
               <span className="preview-hint">预览模板 →</span>
+              <button
+                className={`fav-btn ${favs.includes(t.id) ? 'on' : ''}`}
+                aria-label={favs.includes(t.id) ? '取消收藏' : '收藏此模板'}
+                onClick={(e) => onToggleFav(e, t.id)}
+              >{favs.includes(t.id) ? '★' : '☆'}</button>
             </div>
             <div className="tpl-body">
               <h3>{t.name}</h3>
@@ -102,11 +134,11 @@ export default function Market({ nav }) {
       {list.length === 0 && (
         <div className="empty-state">
           <div className="ring">🔍</div>
-          <h3>没有匹配的模板</h3>
-          <p>换个筛选条件试试，或让 AI 直接为你生成</p>
+          <h3>{query || onlyFav ? '没有匹配的模板' : '模板库是空的'}</h3>
+          <p>{onlyFav ? '还没有收藏任何模板，点击卡片右上角 ☆ 即可收藏。' : '换个筛选条件试试，或让 AI 直接为你生成'}</p>
           <div style={{ display: 'flex', gap: 10, justifyContent: 'center', marginTop: 16 }}>
-            <button className="btn btn-p" onClick={() => { setCat('全部'); setStyle('全部') }}>清除筛选</button>
-            <button className="btn btn-line" onClick={() => nav('ai')}>✨ AI 生成</button>
+            <button className="btn btn-p" onClick={() => { setCat('全部'); setStyle('全部'); setQuery(''); setOnlyFav(false) }}>清除筛选</button>
+            {!onlyFav && <button className="btn btn-line" onClick={() => nav('ai')}>✨ AI 生成</button>}
           </div>
         </div>
       )}
