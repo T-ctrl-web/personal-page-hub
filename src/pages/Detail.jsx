@@ -2,11 +2,13 @@ import { useState } from 'react'
 import { getTemplate, removeCustomOutput, hasCustomOutput } from '../templates/index.js'
 import { downloadTemplate } from '../engine/export.js'
 import PreviewFrame from '../engine/PreviewFrame.jsx'
+import FullscreenPreview from '../engine/FullscreenPreview.jsx'
 import Icon from '../engine/Icon.jsx'
 
 export default function Detail({ routeParam, nav }) {
   const tpl = getTemplate(routeParam)
   const [gone, setGone] = useState(false)
+  const [fs, setFs] = useState(false)
   // 模板存在于库中但打不开（损坏）——给删除入口，避免「打不开也删不掉」的死锁
   const broken = !tpl && !gone && hasCustomOutput(routeParam)
 
@@ -41,7 +43,11 @@ export default function Detail({ routeParam, nav }) {
 
   return (
     <div className="detail-wrap">
-      <PreviewFrame className="preview-frame" template={tpl} data={structuredClone(tpl.defaults)} title={tpl.name} cacheKey={`${tpl.id}|detail`} />
+      <div className="preview-wrap">
+        <PreviewFrame className="preview-frame" template={tpl} data={structuredClone(tpl.defaults)} title={tpl.name} cacheKey={`${tpl.id}|detail`} />
+        <button className="fs-launch" onClick={() => setFs(true)}><Icon name="expand" size={14} /> 全屏预览</button>
+        {fs && <FullscreenPreview template={tpl} data={structuredClone(tpl.defaults)} onClose={() => setFs(false)} />}
+      </div>
       <div className="detail-info">
         <h2>{tpl.name} {tpl.ai && <span className="chip-btn" style={{ background: 'var(--primary)', color: '#fff', border: 'none', cursor: 'default', verticalAlign: 'middle' }}>AI 生成</span>}</h2>
         <div className="tags"><span>{tpl.category}</span><span>{tpl.style}</span>{tpl.ai && <span style={{ background: 'var(--pink-soft)', color: 'var(--pink-fg)' }}>可编辑 · 可下载</span>}</div>

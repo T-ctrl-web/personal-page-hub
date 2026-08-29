@@ -3,6 +3,7 @@ import { allTemplates, countBrokenOutputs, removeAllBrokenOutputs } from '../tem
 import { downloadTemplate } from '../engine/export.js'
 import PreviewFrame from '../engine/PreviewFrame.jsx'
 import LazyCover from '../engine/LazyCover.jsx'
+import FullscreenPreview from '../engine/FullscreenPreview.jsx'
 import Icon from '../engine/Icon.jsx'
 import { loadFavorites, toggleFavorite } from '../store.js'
 
@@ -13,6 +14,7 @@ export default function Market({ nav }) {
   const [onlyFav, setOnlyFav] = useState(false)
   const [favs, setFavs] = useState(loadFavorites)
   const [previewId, setPreviewId] = useState(null)
+  const [fs, setFs] = useState(null)
   const [brokenN, setBrokenN] = useState(countBrokenOutputs)
   const modalRef = useRef(null)
 
@@ -172,14 +174,17 @@ export default function Market({ nav }) {
               <div className="mb-head">
                 <b>{t.name}</b>
                 <div className="acts">
+                  <button className="btn btn-line btn-sm" style={{ color: '#fff', borderColor: 'var(--on-dark-border)' }} onClick={() => { setFs(t); setPreviewId(null) }}><Icon name="expand" size={14} /> 全屏</button>
                   <button className="btn btn-p btn-sm" onClick={() => { setPreviewId(null); nav(`detail/${t.id}`) }}>使用此模板</button>
-                  <button className="btn btn-line btn-sm" style={{ color: '#fff', borderColor: 'var(--on-dark-border)' }} onClick={() => setPreviewId(null)} ref={modalRef} tabIndex={-1} aria-label="关闭预览"><Icon name="close" size={14} /></button>                </div>
+                  <button className="btn btn-line btn-sm" style={{ color: '#fff', borderColor: 'var(--on-dark-border)' }} onClick={() => setPreviewId(null)} ref={modalRef} tabIndex={-1} aria-label="关闭预览"><Icon name="close" size={14} /></button>
+                </div>
               </div>
               <PreviewFrame style={{ flex: 1, height: 'auto', border: 'none' }} template={t} data={structuredClone(t.defaults)} title={t.name} cacheKey={`${t.id}|modal`} />
             </div>
           </div>
         )
       })()}
+      {fs && <FullscreenPreview template={fs} data={structuredClone(fs.defaults)} onClose={() => setFs(null)} />}
     </div>
   )
 }

@@ -2,6 +2,7 @@ import { useDeferredValue, useMemo, useState } from 'react'
 import Editor from '../engine/Editor.jsx'
 import { downloadTemplate } from '../engine/export.js'
 import PreviewFrame from '../engine/PreviewFrame.jsx'
+import FullscreenPreview from '../engine/FullscreenPreview.jsx'
 import { getTemplate } from '../templates/index.js'
 import { upsertMine, getMine } from '../store.js'
 import Icon from '../engine/Icon.jsx'
@@ -19,6 +20,7 @@ export default function Edit({ param, nav }) {
   const [data, setData] = useState(() => structuredClone(existing?.data || tpl?.defaults || {}))
   const [name, setName] = useState(existing?.name || (tpl ? `${tpl.name} · 我的版本` : ''))
   const [saved, setSaved] = useState(false)
+  const [fs, setFs] = useState(false)
   // 预览数据延迟更新：表单输入即时响应，预览 iframe 稍后重建，避免打字卡顿
   const previewData = useDeferredValue(data)
 
@@ -52,7 +54,11 @@ export default function Edit({ param, nav }) {
           <Editor schema={tpl.schema} data={data} onChange={setData} />
         </div>
         <div className="edit-preview">
-          <PreviewFrame className="preview-frame small" template={tpl} data={previewData} />
+          <div className="preview-wrap">
+            <PreviewFrame className="preview-frame small" template={tpl} data={previewData} />
+            <button className="fs-launch" onClick={() => setFs(true)}><Icon name="expand" size={14} /> 全屏预览</button>
+          </div>
+          {fs && <FullscreenPreview template={tpl} data={previewData} onClose={() => setFs(false)} title={`${name.trim() || tpl.name} · 实时预览`} />}
         </div>
       </div>
     </div>

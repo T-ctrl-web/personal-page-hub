@@ -35,6 +35,8 @@ const PATHS = {
   palette: '<circle cx="13.5" cy="6.5" r=".5"/><circle cx="17.5" cy="10.5" r=".5"/><circle cx="8.5" cy="7.5" r=".5"/><circle cx="6.5" cy="12.5" r=".5"/><path d="M12 2a10 10 0 0 0 0 20c1.1 0 2-.9 2-2 0-.5-.2-1-.6-1.3-.4-.4-.6-.8-.6-1.4 0-1.1.9-2 2-2h2.3A4.8 4.8 0 0 0 22 10.3C22 5.7 17.5 2 12 2z"/>',
   edit: '<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>',
   bulb: '<path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4.2 12.6c.7.5 1.2 1.4 1.2 2.4h6c0-1 .5-1.9 1.2-2.4A7 7 0 0 0 12 2z"/>',
+  expand: '<path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="M21 3l-7 7"/><path d="M3 21l7-7"/>',
+  collapse: '<path d="M14 10V4"/><path d="M20 4l-6 6"/><path d="M10 14H4"/><path d="M4 20l6-6"/>',
 }
 
 const ICONS = Object.fromEntries(

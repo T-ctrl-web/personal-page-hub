@@ -4,6 +4,7 @@ import { saveCustomOutput, loadCustomOutputs } from '../templates/index.js'
 import { downloadTemplate } from '../engine/export.js'
 import { validateRenderBody } from '../engine/sandboxRenderer.js'
 import PreviewFrame from '../engine/PreviewFrame.jsx'
+import FullscreenPreview from '../engine/FullscreenPreview.jsx'
 import Icon from '../engine/Icon.jsx'
 
 const STYLE_OPTIONS = ['自动', '极简瑞士风', 'Bento 网格', '编辑杂志风', '暗色高级感', '玻璃拟态', '柔和暖色', '工业极客', '艺术实验']
@@ -24,6 +25,7 @@ export default function AiGen({ nav }) {
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
   const [result, setResult] = useState(null) // { template }
+  const [fs, setFs] = useState(false)
 
   // 挂载时恢复上次生成结果（模板已存 localStorage，按 id 重新组装）
   useEffect(() => {
@@ -164,7 +166,11 @@ export default function AiGen({ nav }) {
                   <button className="btn btn-line" onClick={generate} disabled={busy}><Icon name="refresh" size={15} /> 重新生成</button>
                 </div>
               </div>
-              <PreviewFrame className="preview-frame" template={result} data={structuredClone(result.defaults)} title="AI 模板预览" cacheKey={`${result.id}|gen`} />
+              <div className="preview-wrap">
+                <PreviewFrame className="preview-frame" template={result} data={structuredClone(result.defaults)} title="AI 模板预览" cacheKey={`${result.id}|gen`} />
+                <button className="fs-launch" onClick={() => setFs(true)}><Icon name="expand" size={14} /> 全屏预览</button>
+              </div>
+              {fs && <FullscreenPreview template={result} data={structuredClone(result.defaults)} onClose={() => setFs(false)} />}
             </div>
           ) : (
             <div className="empty-state">
