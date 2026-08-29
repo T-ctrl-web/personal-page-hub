@@ -52,7 +52,7 @@ export default function App() {
         </nav>
         <span className="hub-badge">{TEMPLATES.length} 内置模板</span>
       </header>
-      <main className="hub-main">{page}</main>
+      <main className="hub-main" key={route.path + '/' + route.param}>{page}</main>
       <footer className="hub-foot">PersonalPage Hub · 模板引擎 MVP · 数据保存在浏览器本地</footer>
       </div>
     </ErrorBoundary>

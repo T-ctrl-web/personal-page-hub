@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { loadMine, removeMine } from '../store.js'
 import { getTemplate } from '../templates/index.js'
 import { downloadTemplate, downloadJson } from '../engine/export.js'
+import Icon from '../engine/Icon.jsx'
 
 function fmt(ts) {
   const d = new Date(ts)
@@ -51,14 +52,14 @@ export default function Workspace({ nav }) {
           <p>已编辑并保存的模板，保存在本浏览器中（localStorage）。可导出 HTML / JSON 备份。</p>
         </div>
         <label className="btn btn-line">
-          ⬆ 导入 JSON
+          <Icon name="upload" size={15} /> 导入 JSON
           <input type="file" accept=".json" style={{ display: 'none' }} onChange={handleImport} />
         </label>
       </div>
-      {msg && <div style={{ color: '#10B981', marginBottom: 12, fontSize: 14 }}>{msg}</div>}
+      {msg && <div style={{ color: 'var(--ok)', marginBottom: 12, fontSize: 14 }}>{msg}</div>}
       {mine.length === 0 ? (
         <div className="empty-state">
-          <div className="ring">🗂️</div>
+          <div className="ring"><Icon name="folder" size={40} /></div>
           <h3>还没有保存的模板</h3>
           <p>去模板市场挑一个，开始你的第一个个人主页</p>
           <button className="btn btn-p" onClick={() => nav('')}>去模板市场</button>
@@ -72,10 +73,10 @@ export default function Workspace({ nav }) {
                 <h3>{m.name}</h3>
                 <div className="meta">模板：{tpl ? tpl.name : '（已下线）'} · {fmt(m.updatedAt)}</div>
                 <div className="acts">
-                  <button className="btn btn-p btn-sm" onClick={() => nav(`edit/${m.id}`)}>编辑</button>
-                  {tpl && <button className="btn btn-line btn-sm" onClick={() => downloadTemplate(tpl, m.data, `${m.name}.html`)}>下载 HTML</button>}
-                  {tpl && <button className="btn btn-line btn-sm" onClick={() => downloadJson({ name: m.name, templateId: m.templateId, data: m.data }, `${m.name}.json`)}>导出 JSON</button>}
-                  <button className="btn btn-danger btn-sm" onClick={() => { if (confirm(`删除「${m.name}」？`)) { removeMine(m.id); refresh() } }}>删除</button>
+                  <button className="btn btn-p btn-sm" onClick={() => nav(`edit/${m.id}`)}><Icon name="pencil" size={13} /> 编辑</button>
+                  {tpl && <button className="btn btn-line btn-sm" onClick={() => downloadTemplate(tpl, m.data, `${m.name}.html`)}><Icon name="download" size={13} /> 下载 HTML</button>}
+                  {tpl && <button className="btn btn-line btn-sm" onClick={() => downloadJson({ name: m.name, templateId: m.templateId, data: m.data }, `${m.name}.json`)}><Icon name="file" size={13} /> 导出 JSON</button>}
+                  <button className="btn btn-danger btn-sm" onClick={() => { if (confirm(`删除「${m.name}」？`)) { removeMine(m.id); refresh() } }}><Icon name="trash" size={13} /> 删除</button>
                 </div>
               </div>
             )

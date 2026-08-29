@@ -4,6 +4,7 @@ import { saveCustomOutput, loadCustomOutputs } from '../templates/index.js'
 import { downloadTemplate } from '../engine/export.js'
 import { validateRenderBody } from '../engine/sandboxRenderer.js'
 import PreviewFrame from '../engine/PreviewFrame.jsx'
+import Icon from '../engine/Icon.jsx'
 
 const STYLE_OPTIONS = ['自动', '极简瑞士风', 'Bento 网格', '编辑杂志风', '暗色高级感', '玻璃拟态', '柔和暖色', '工业极客', '艺术实验']
 const SECTION_OPTIONS = ['关于我', '技能', '项目', '证书', '教育', '联系方式']
@@ -85,7 +86,7 @@ export default function AiGen({ nav }) {
 
       <div style={{ display: 'grid', gridTemplateColumns: '420px 1fr', gap: 22, alignItems: 'start', marginTop: 26 }}>
         {/* 左侧：表单 */}
-        <div className="card edit-panel" style={{ position: 'sticky', top: 78 }}>
+        <div className="card edit-panel" style={{ position: 'sticky', top: 72 }}>
           <h2>描述你的主页</h2>
           <p className="sub">填得越具体，生成越贴合</p>
 
@@ -136,10 +137,10 @@ export default function AiGen({ nav }) {
             </div>
           </div>
 
-          {error && <div style={{ color: 'var(--danger)', fontSize: 13, marginBottom: 12, background: '#FDECEE', padding: '10px 14px', borderRadius: 10 }}>{error}</div>}
+          {error && <div style={{ color: 'var(--danger)', fontSize: 13, marginBottom: 12, background: 'var(--danger-soft)', padding: '10px 14px', borderRadius: 'var(--radius-md)' }}>{error}</div>}
 
           <button className="btn btn-p" style={{ width: '100%' }} onClick={generate} disabled={busy}>
-            {busy ? '⏳ AI 生成中（约 30-60 秒）…' : '✨ 生成我的模板'}
+            {busy ? <><Icon name="refresh" size={16} className="spin" /> AI 生成中（约 30-60 秒）…</> : <><Icon name="sparkles" size={16} /> 生成我的模板</>}
           </button>
           <div style={{ fontSize: 11.5, color: 'var(--muted)', marginTop: 10, textAlign: 'center' }}>生成消耗少量 API 额度 · AI 内容建议核对后再使用</div>
         </div>
@@ -148,7 +149,7 @@ export default function AiGen({ nav }) {
         <div>
           {busy ? (
             <div className="empty-state">
-              <div className="ring" style={{ animation: 'pulse 1.4s infinite' }}>🤖</div>
+              <div className="ring" style={{ animation: 'pulse 1.4s infinite' }}><Icon name="robot" size={40} /></div>
               <h3>AI 正在构思你的模板…</h3>
               <p>正在生成布局、配色与内容结构，请稍候（首次可能较慢）</p>
             </div>
@@ -156,18 +157,18 @@ export default function AiGen({ nav }) {
             <div>
               <div style={{ display: 'flex', gap: 10, alignItems: 'center', marginBottom: 12, flexWrap: 'wrap' }}>
                 <h2 style={{ fontSize: 20, fontWeight: 800 }}>{result.name}</h2>
-                <span className="chip-btn" style={{ background: 'var(--primary-grad)', color: '#fff', border: 'none', cursor: 'default' }}>AI 生成</span>
+                <span className="chip-btn" style={{ background: 'var(--primary)', color: '#fff', border: 'none', cursor: 'default' }}>AI 生成</span>
                 <div style={{ marginLeft: 'auto', display: 'flex', gap: 8 }}>
-                  <button className="btn btn-p" onClick={() => nav(`edit/new/${result.id}`)}>✏️ 编辑我的信息</button>
-                  <button className="btn btn-line" onClick={() => downloadTemplate(result, structuredClone(result.defaults), `${result.id}.html`)}>⬇ 下载</button>
-                  <button className="btn btn-line" onClick={generate} disabled={busy}>↺ 重新生成</button>
+                  <button className="btn btn-p" onClick={() => nav(`edit/new/${result.id}`)}><Icon name="pencil" size={15} /> 编辑我的信息</button>
+                  <button className="btn btn-line" onClick={() => downloadTemplate(result, structuredClone(result.defaults), `${result.id}.html`)}><Icon name="download" size={15} /> 下载</button>
+                  <button className="btn btn-line" onClick={generate} disabled={busy}><Icon name="refresh" size={15} /> 重新生成</button>
                 </div>
               </div>
               <PreviewFrame className="preview-frame" template={result} data={structuredClone(result.defaults)} title="AI 模板预览" />
             </div>
           ) : (
             <div className="empty-state">
-              <div className="ring">✨</div>
+              <div className="ring"><Icon name="sparkles" size={40} /></div>
               <h3>还没有生成结果</h3>
               <p>填好左侧表单，点击「生成我的模板」；生成的模板会自动保存，并出现在模板市场里（标注 AI 生成）</p>
             </div>
