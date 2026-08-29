@@ -1,0 +1,26 @@
+{
+  "name": "personal-page-hub",
+  "private": true,
+  "version": "0.1.0",
+  "description": "个人网页模板工坊：9 大设计风格模板库 + AI 定制生成 + 可视化编辑 + 沙箱隔离。挑模板 → 在线编辑 → 实时预览 → 一键下载独立 HTML。",
+  "license": "GPL-3.0-only",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/T-ctrl-web/personal-page-hub"
+  },
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.4",
+    "vite": "^5.4.11",
+    "vite-plugin-singlefile": "^2.3.3"
+  }
+}
