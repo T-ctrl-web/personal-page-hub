@@ -59,6 +59,7 @@ export default {
         key: 'projects',
         itemLabel: '项目',
         fields: [
+          { key: 'cover', label: '封面图片 URL', hint: '选填；填了显示图片卡，留空显示纯文字' },
           { key: 'title', label: '项目名称' },
           { key: 'year', label: '年份 / 标签' },
           { key: 'desc', label: '描述', type: 'textarea' },
@@ -114,9 +115,9 @@ export default {
       { title: '工具', desc: 'Figma、InDesign、Photoshop' },
     ],
     projects: [
-      { title: '《字里行间》独立杂志视觉', year: '2025', desc: '为独立文学杂志建立完整视觉系统：封面、内页网格、字号体系，从 0 到 1 的编辑设计实践。', stack: ['InDesign', '品牌系统'] },
-      { title: '知夏设计札记', year: '2024 — 至今', desc: '持续写作的设计博客，40+ 篇文章沉淀方法论；年度读者超过 2 万人。', stack: ['内容设计', '写作'] },
-      { title: '茶屿品牌升级', year: '2023', desc: '为精品茶品牌重塑视觉，从命名叙事到包装落地，上线后客单价提升 26%。', stack: ['品牌策略', '包装设计'] },
+      { title: '《字里行间》独立杂志视觉', year: '2025', desc: '为独立文学杂志建立完整视觉系统：封面、内页网格、字号体系，从 0 到 1 的编辑设计实践。', stack: ['InDesign', '品牌系统'], cover: '' },
+      { title: '知夏设计札记', year: '2024 — 至今', desc: '持续写作的设计博客，40+ 篇文章沉淀方法论；年度读者超过 2 万人。', stack: ['内容设计', '写作'], cover: '' },
+      { title: '茶屿品牌升级', year: '2023', desc: '为精品茶品牌重塑视觉，从命名叙事到包装落地，上线后客单价提升 26%。', stack: ['品牌策略', '包装设计'], cover: '' },
     ],
     timeline: [
       { when: '2021 — 至今', title: '独立设计工作室', desc: '为品牌与媒体提供视觉方向与编辑设计服务。' },
@@ -173,13 +174,14 @@ export default {
     <div class="container">
       <div class="sec-head"><span class="num">03</span><h2>作品</h2></div>
       <div class="works">${(d.projects || []).map((p, i) => `
-        <article class="work">
+        <article class="work${p.cover && String(p.cover).trim() ? ' with-cover' : ''}">
           <div class="work-index">${String(i + 1).padStart(2, '0')}</div>
           <div class="work-body">
             <div class="work-meta"><span class="work-year">${esc(p.year)}</span><span class="tags">${terms(p.stack)}</span></div>
             <h3>${esc(p.title)}</h3>
             <p>${esc(p.desc)}</p>
           </div>
+          ${p.cover && String(p.cover).trim() ? `<div class="work-cover"><img src="${esc(String(p.cover).trim())}" alt="${esc(p.title)} 封面" loading="lazy"></div>` : ''}
         </article>`).join('')}
       </div>
     </div>
@@ -250,11 +252,14 @@ a{color:inherit;text-decoration:none}
 .skill p{color:var(--muted);font-size:14px}
 .works{border-top:1px solid var(--border)}
 .work{display:grid;grid-template-columns:70px 1fr;gap:20px;padding:30px 0;border-bottom:1px solid var(--border)}
+.work.with-cover{grid-template-columns:70px 1fr 200px;align-items:start}
 .work-index{font-family:var(--font-display);font-size:22px;color:var(--muted)}
 .work-meta{display:flex;gap:12px;align-items:center;margin-bottom:8px;flex-wrap:wrap}
 .work-year{font-family:var(--font-mono);font-size:12.5px;color:var(--primary)}
 .work-body h3{font-family:var(--font-display);font-size:21px;margin-bottom:6px}
 .work-body p{color:var(--fg-2);font-size:15px}
+.work-cover{border-radius:6px;overflow:hidden;border:1px solid var(--border);box-shadow:var(--shadow-sm);background:var(--bg-2)}
+.work-cover img{display:block;width:100%;height:132px;object-fit:cover}
 .timeline{border-top:1px solid var(--border)}
 .tl{display:grid;grid-template-columns:180px 1fr;gap:20px;padding:24px 0;border-bottom:1px solid var(--border)}
 .tl-when{font-family:var(--font-display);font-style:italic;color:var(--primary);font-size:15px}
@@ -278,6 +283,8 @@ footer{padding:34px 0 44px;text-align:center;font-size:12.5px;color:var(--muted)
 }
 @media(max-width:560px){
   .work{grid-template-columns:1fr;gap:8px}
+  .work.with-cover{grid-template-columns:1fr}
+  .work-cover img{height:180px}
   .stats{grid-template-columns:repeat(2,1fr)}
 }
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}`,

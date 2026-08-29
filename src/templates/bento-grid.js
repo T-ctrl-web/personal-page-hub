@@ -69,6 +69,7 @@ export default {
         key: 'projects',
         itemLabel: '项目',
         fields: [
+          { key: 'cover', label: '封面图片 URL', hint: '选填；填了显示图片卡，留空显示纯文字' },
           { key: 'title', label: '项目名称' },
           { key: 'year', label: '年份' },
           { key: 'desc', label: '描述', type: 'textarea' },
@@ -116,9 +117,9 @@ export default {
       { title: '📦 开源任务调度器', desc: '基于 Rust 重写中，目标 10ms 级调度延迟。' },
     ],
     projects: [
-      { title: '数据中台重构', year: '2024', desc: '主导头部 SaaS 数据中台从单体到微服务的演进，查询性能提升 8 倍，支撑 20+ 业务线。', stack: ['TypeScript', 'Node.js', 'ClickHouse'] },
-      { title: '低代码搭建平台', year: '2022', desc: '自研可视化搭建引擎，拖拽即生成业务页面，内部 300+ 应用在跑，搭建效率提升 5 倍。', stack: ['React', 'DnD', 'GraphQL'] },
-      { title: '「一刻」灵感记录', year: '2025', desc: '独立开发的跨端灵感记录产品，离线优先 + 本地优先同步，上线 8 个月累计用户 4 万。', stack: ['Rust', 'React Native', 'SQLite'] },
+      { title: '数据中台重构', year: '2024', desc: '主导头部 SaaS 数据中台从单体到微服务的演进，查询性能提升 8 倍，支撑 20+ 业务线。', stack: ['TypeScript', 'Node.js', 'ClickHouse'], cover: '' },
+      { title: '低代码搭建平台', year: '2022', desc: '自研可视化搭建引擎，拖拽即生成业务页面，内部 300+ 应用在跑，搭建效率提升 5 倍。', stack: ['React', 'DnD', 'GraphQL'], cover: '' },
+      { title: '「一刻」灵感记录', year: '2025', desc: '独立开发的跨端灵感记录产品，离线优先 + 本地优先同步，上线 8 个月累计用户 4 万。', stack: ['Rust', 'React Native', 'SQLite'], cover: '' },
     ],
     contactSub: '正在寻找下一个有趣的合作：独立产品、技术顾问，或是加入你的团队。',
     email: 'guqinghe@example.com',
@@ -196,7 +197,8 @@ export default {
     </div>
     <div class="projects-inner">
       ${(d.projects || []).map((p) => `
-      <article class="project">
+      <article class="project${p.cover && String(p.cover).trim() ? ' with-cover' : ''}">
+        ${p.cover && String(p.cover).trim() ? `<div class="project-cover"><img src="${esc(String(p.cover).trim())}" alt="${esc(p.title)} 封面" loading="lazy"></div>` : ''}
         <span class="project-year">${esc(p.year)}</span>
         <h3>${esc(p.title)}</h3>
         <p>${esc(p.desc)}</p>
@@ -348,6 +350,8 @@ ${avatarGeoCss('avatar')}
 .projects-inner{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
 .project{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-md);padding:22px;display:flex;flex-direction:column;transition:transform var(--dur) var(--ease),box-shadow var(--dur) var(--ease),border-color var(--dur) var(--ease)}
 .project:hover{transform:translateY(-3px);box-shadow:var(--shadow-2);border-color:var(--border-2)}
+.project-cover{margin:-22px -22px 16px;border-radius:var(--radius-md) var(--radius-md) 0 0;overflow:hidden;border-bottom:1px solid var(--border)}
+.project-cover img{display:block;width:100%;height:132px;object-fit:cover}
 .project-year{font-family:var(--font-mono);font-size:12.5px;font-weight:600;color:var(--primary);letter-spacing:1px;margin-bottom:10px;font-variant-numeric:tabular-nums}
 .project h3{font-family:var(--font-display);font-size:17px;font-weight:700;margin-bottom:8px;letter-spacing:-.2px}
 .project p{font-size:14.5px;line-height:1.7;color:var(--fg-2);margin-bottom:14px;flex:1}

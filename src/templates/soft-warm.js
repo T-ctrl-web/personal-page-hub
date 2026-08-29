@@ -65,6 +65,7 @@ export default {
         key: 'projects',
         itemLabel: '项目',
         fields: [
+          { key: 'cover', label: '封面图片 URL', hint: '选填；填了显示图片卡，留空显示纯文字' },
           { key: 'title', label: '项目名称' },
           { key: 'year', label: '年份 / 标签' },
           { key: 'desc', label: '描述', type: 'textarea' },
@@ -117,9 +118,9 @@ export default {
       { title: '街角咖啡快闪', desc: '每月一场快闪，把「屿间」的豆子与故事带到不同的街区，和陌生的人分享同一杯下午。' },
     ],
     projects: [
-      { title: '「屿间」品牌与空间落成', year: '2023', desc: '从选址、装修到菜单与品牌视觉，亲手完成一家 40㎡ 咖啡店的全部细节；开业三个月实现盈亏平衡。', stack: ['品牌', '空间设计', '菜单'] },
-      { title: '手冲体验课 × 180 场', year: '2024', desc: '把冲煮方法拆成可复制的四步，累计 180 场小班课，学员复购率超过四成。', stack: ['课程', '内容'] },
-      { title: '「街角咖啡地图」城市企划', year: '2025', desc: '联合 9 家独立小店做城市咖啡地图与周末快闪，让更多人愿意走进街角那家陌生的店。', stack: ['企划', '联合品牌'] },
+      { title: '「屿间」品牌与空间落成', year: '2023', desc: '从选址、装修到菜单与品牌视觉，亲手完成一家 40㎡ 咖啡店的全部细节；开业三个月实现盈亏平衡。', stack: ['品牌', '空间设计', '菜单'], cover: '' },
+      { title: '手冲体验课 × 180 场', year: '2024', desc: '把冲煮方法拆成可复制的四步，累计 180 场小班课，学员复购率超过四成。', stack: ['课程', '内容'], cover: '' },
+      { title: '「街角咖啡地图」城市企划', year: '2025', desc: '联合 9 家独立小店做城市咖啡地图与周末快闪，让更多人愿意走进街角那家陌生的店。', stack: ['企划', '联合品牌'], cover: '' },
     ],
     lifeTitle: '生活方式 —— 慢一点，也没关系',
     notes: [
@@ -204,8 +205,9 @@ export default {
       </div>
       <div class="works">
         ${(d.projects || []).map((p, i) => `
-        <article class="work">
+        <article class="work${p.cover && String(p.cover).trim() ? ' with-cover' : ''}">
           <div class="work-num" aria-hidden="true">${String(i + 1).padStart(2, '0')}</div>
+          ${p.cover && String(p.cover).trim() ? `<div class="work-cover"><img src="${esc(String(p.cover).trim())}" alt="${esc(p.title)} 封面" loading="lazy"></div>` : ''}
           <div class="work-body">
             <div class="work-meta"><span class="work-year">${esc(p.year)}</span><span class="work-tags">${terms(p.stack)}</span></div>
             <h3>${esc(p.title)}</h3>
@@ -298,7 +300,10 @@ ${avatarGeoCss('orb-avatar')}
 .service p{color:var(--fg-2);font-size:15px;line-height:1.75}
 .works{display:flex;flex-direction:column;gap:16px}
 .work{display:grid;grid-template-columns:56px 1fr;gap:22px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:30px;box-shadow:var(--shadow-sm);transition:transform .2s ease,box-shadow .2s ease}
+.work.with-cover{grid-template-columns:56px 220px 1fr;align-items:start}
 .work:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
+.work-cover{border-radius:var(--radius-md);overflow:hidden;border:1px solid var(--border)}
+.work-cover img{display:block;width:100%;height:132px;object-fit:cover}
 .work-num{font-family:var(--font-display);font-size:22px;color:var(--primary-soft);padding-top:2px}
 .work-meta{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:10px}
 .work-year{font-size:12.5px;font-weight:600;letter-spacing:1px;color:var(--primary-ink)}
@@ -325,6 +330,8 @@ footer{padding:38px 0 50px;text-align:center;font-size:13px;color:var(--muted)}
   .about-grid{grid-template-columns:1fr;gap:40px}
   .services{grid-template-columns:1fr}
   .work{grid-template-columns:1fr;gap:12px}
+  .work.with-cover{grid-template-columns:1fr}
+  .work-cover img{height:180px}
   .work-num{display:none}
   .life-card{padding:44px 34px}
   .contact-card{padding:56px 32px}

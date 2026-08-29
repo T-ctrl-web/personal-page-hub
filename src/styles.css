@@ -184,9 +184,6 @@ h1, h2, h3, h4 { font-family: var(--font-display); letter-spacing: .2px; }
 .btn-danger { background: var(--danger-soft); color: var(--danger); }
 .btn-sm { min-height: 36px; padding: 0 14px; font-size: 12.5px; }
 .btn-lg { min-height: 50px; padding: 0 30px; font-size: 15px; }
-.empty { text-align: center; padding: 64px 0; color: var(--muted); }
-.empty .ico { font-size: 46px; margin-bottom: 12px; }
-.empty .btn { margin-top: 16px; }
 
 /* ============ 模板卡片（封面 = 迷你网页缩略图） ============ */
 .tpl-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(272px, 1fr)); gap: 22px; }
