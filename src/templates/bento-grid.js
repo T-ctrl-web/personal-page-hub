@@ -3,6 +3,7 @@
  * 苹果官网式模块化圆角卡片网格：大小卡片错落拼接、浅灰底 + 品牌蓝 + 青橙点缀，数据感与工程感兼具。适合开发者、产品经理、数据从业者。
  */
 import { esc } from '../engine/export.js'
+import { avatarHtml, avatarGeoCss } from './avatar.js'
 
 export default {
   id: 'bento-grid',
@@ -19,6 +20,7 @@ export default {
       group: '基本信息',
       fields: [
         { key: 'name', label: '姓名' },
+        { key: 'avatar', label: '头像图片 URL', hint: '选填；填了显示照片，留空显示抽象几何头像' },
         { key: 'role', label: '一句话定位' },
         { key: 'badge', label: '徽章/标签', hint: '如：全栈工程师 · 深圳' },
         { key: 'desc', label: '自我介绍（Hero）', type: 'textarea' },
@@ -87,6 +89,7 @@ export default {
 
   defaults: {
     name: '顾清和',
+    avatar: '',
     role: '全栈工程师 · 独立产品人',
     badge: '前大厂资深工程师 · 现居深圳',
     desc: '我写代码，也定义产品。七年全栈经验，从日活千万的 B 端平台到自己的独立小产品，始终相信「把一件事做到极致的简单」。',
@@ -149,7 +152,7 @@ export default {
       </div>
       <div class="hero-chips">${terms(d.chips)}</div>
     </div>
-    <div class="avatar" aria-hidden="true">${esc((d.name || '').slice(0, 1))}</div>
+    ${avatarHtml(d.avatar, d.name, 'avatar')}
   </header>
 
   <section class="card about" id="about">
@@ -275,12 +278,13 @@ a{color:inherit;text-decoration:none}
 .hero::before{content:"";position:absolute;right:-90px;bottom:-120px;width:300px;height:300px;border-radius:50%;background:var(--white-08);pointer-events:none}
 .hero-body{position:relative;z-index:1;flex:1;min-width:0}
 .badge{display:inline-block;font-size:12.5px;letter-spacing:1.5px;color:var(--white-92);border:1px solid var(--white-40);background:var(--white-14);padding:5px 14px;border-radius:var(--radius-pill);margin-bottom:20px;font-family:var(--font-mono)}
-.hero h1{font-family:var(--font-display);font-size:clamp(36px,5vw,56px);font-weight:800;line-height:1.08;letter-spacing:-1px;color:var(--white);margin-bottom:8px}
-.hero-role{font-size:18px;font-weight:600;color:var(--white-92);margin-bottom:14px}
-.hero-desc{font-size:16px;line-height:1.75;color:var(--white-92);max-width:46ch;margin-bottom:26px}
+.hero h1{font-family:var(--font-display);font-size:clamp(36px,5vw,56px);font-weight:800;line-height:1.2;letter-spacing:-.5px;color:var(--white);margin-bottom:8px;animation:fadeUp .7s ease-out both}
+.hero-role{font-size:18px;font-weight:600;color:var(--white-92);margin-bottom:14px;animation:fadeUp .7s ease-out both;animation-delay:.12s}
+.hero-desc{font-size:16px;line-height:1.75;color:var(--white-92);max-width:46ch;margin-bottom:26px;animation:fadeUp .7s ease-out both;animation-delay:.24s}
 .hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:24px}
 .hero-chips{display:flex;flex-wrap:wrap;gap:8px}
-.avatar{position:relative;z-index:1;flex-shrink:0;width:128px;height:128px;border-radius:50%;background:var(--avatar-grad);border:3px solid var(--white-35);display:grid;place-items:center;font-family:var(--font-display);font-size:50px;font-weight:800;color:var(--white);box-shadow:var(--shadow-avatar)}
+.avatar{position:relative;z-index:1;flex-shrink:0;width:128px;height:128px;border-radius:50%;overflow:hidden;border:3px solid var(--white-35);box-shadow:var(--shadow-avatar);--geo-a:#38BDF8;--geo-b:#2563EB;--geo-c:#1D4ED8}
+${avatarGeoCss('avatar')}
 
 /* 按钮 */
 .btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 22px;border-radius:var(--radius-pill);font-size:15px;font-weight:600;letter-spacing:.3px;transition:transform var(--dur) var(--ease),box-shadow var(--dur) var(--ease),background var(--dur) var(--ease),color var(--dur) var(--ease)}
@@ -359,25 +363,26 @@ footer{padding:34px 24px 44px}
 @media(max-width:900px){
   .bento{margin-top:28px}
   .hero{padding:36px 32px;gap:28px}
-  .avatar{width:104px;height:104px;font-size:40px}
+  .avatar{width:104px;height:104px}
   .about{grid-column:1/-1}
   .stats-card{grid-column:span 3}
   .skill-card{grid-column:span 3}
   .doing-card{grid-column:span 3}
   .contact-card{grid-column:span 3}
   .projects-inner{grid-template-columns:1fr}
-  .nav-links a:not(:first-child):not(:last-child){display:none}
+  .nav-links{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;max-width:100%;mask-image:linear-gradient(90deg,#000 calc(100% - 30px),transparent);-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 30px),transparent)}
+  .nav-links::-webkit-scrollbar{display:none}
+  .nav-links a{white-space:nowrap;flex-shrink:0}
 }
 @media(max-width:560px){
   .bento{padding:0 16px;gap:14px}
   .hero{flex-direction:column;align-items:flex-start;padding:32px 24px;gap:24px}
   .hero-actions{width:100%}
   .hero-actions .btn{flex:1}
-  .avatar{width:88px;height:88px;font-size:34px}
+  .avatar{width:88px;height:88px}
   .about,.stats-card,.skill-card,.doing-card,.contact-card{grid-column:1/-1}
   .stats-grid{grid-template-columns:repeat(2,1fr)}
   .card{padding:22px}
-  .nav-links a:not(:first-child){display:none}
 }
 @media(prefers-reduced-motion:reduce){
   *{animation:none!important;transition:none!important;scroll-behavior:auto!important}

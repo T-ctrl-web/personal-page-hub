@@ -228,9 +228,9 @@ a{color:inherit;text-decoration:none}
 .links a:hover{color:var(--primary);border-bottom-color:var(--primary)}
 .hero{padding:110px 0 90px;border-bottom:1px solid var(--border)}
 .badge{display:inline-block;font-size:13px;letter-spacing:2px;color:var(--primary);border:1px solid var(--border);padding:5px 14px;border-radius:999px;margin-bottom:26px;font-family:var(--font-mono)}
-.hero h1{font-family:var(--font-display);font-size:clamp(40px,7vw,72px);font-weight:700;line-height:1.12;letter-spacing:.5px}
+.hero h1{font-family:var(--font-display);font-size:clamp(40px,7vw,72px);font-weight:700;line-height:1.2;letter-spacing:.5px;animation:fadeUp .7s ease-out both}
 .hero h1 em{display:block;font-style:normal;color:var(--primary);font-weight:400;font-size:.55em;margin-top:10px}
-.lead{color:var(--fg-2);font-size:17px;max-width:34em;margin-top:24px;line-height:1.8}
+.lead{color:var(--fg-2);font-size:17px;max-width:28em;margin-top:24px;line-height:1.8;animation:fadeUp .7s ease-out .2s both}
 .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px}
 .tag{font-size:12px;font-family:var(--font-mono);color:var(--fg-2);border:1px solid var(--border);padding:4px 12px;border-radius:999px}
 .sec{padding:76px 0}
@@ -272,7 +272,9 @@ footer{padding:34px 0 44px;text-align:center;font-size:12.5px;color:var(--muted)
   .about-grid{grid-template-columns:1fr;gap:32px}
   .skills-grid{grid-template-columns:1fr}
   .tl{grid-template-columns:1fr;gap:6px}
-  .links a:not(:first-child){display:none}
+  .links{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;max-width:100%;mask-image:linear-gradient(90deg,#000 calc(100% - 30px),transparent);-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 30px),transparent)}
+  .links::-webkit-scrollbar{display:none}
+  .links a{white-space:nowrap;flex-shrink:0}
 }
 @media(max-width:560px){
   .work{grid-template-columns:1fr;gap:8px}

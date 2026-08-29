@@ -152,6 +152,7 @@ export default {
       ['out', (d.chips || []).join('  ') || '—'],
       ['cmd', '$ uptime'],
       ['out', statLine || '—'],
+      ['hint', '# 提示：把这里换成你的项目经历 / 技能清单'],
       ['cmd', '$'],
     ].map(([t, x]) => `<span class="t-${t}">${x}</span>`).join('\n')
     return `
@@ -317,10 +318,10 @@ body::after{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;bac
 .hero .grid{display:grid;grid-template-columns:1.02fr .98fr;gap:44px;align-items:center}
 .badge{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;color:var(--accent-deep);border:1px solid var(--border);background:var(--card);padding:5px 12px;border-radius:var(--radius-sm);letter-spacing:.4px}
 .badge .led{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
-.hero h1{font-size:clamp(34px,5vw,54px);font-weight:800;letter-spacing:-1px;line-height:1.12;margin:20px 0 8px}
+.hero h1{font-size:clamp(34px,5vw,54px);font-weight:800;letter-spacing:-.5px;line-height:1.18;margin:20px 0 8px;animation:fadeUp .7s ease-out both}
 .hero h1::before{content:'▍';color:var(--accent);margin-right:10px;font-size:.72em;vertical-align:4px}
-.hero .role{font-size:clamp(17px,2.2vw,20px);font-weight:600;color:var(--fg-2)}
-.hero .desc{margin:18px 0 26px;color:var(--fg-2);max-width:36em;font-size:16px;line-height:1.8}
+.hero .role{font-size:clamp(17px,2.2vw,20px);font-weight:600;color:var(--fg-2);animation:fadeUp .7s ease-out .1s both}
+.hero .desc{margin:18px 0 26px;color:var(--fg-2);max-width:28em;font-size:16px;line-height:1.8;animation:fadeUp .7s ease-out .18s both}
 .cta-row{display:flex;gap:10px;flex-wrap:wrap}
 .btn{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:0 22px;border-radius:var(--radius-sm);font-size:14px;font-weight:700;letter-spacing:.3px;transition:background-color .15s ease,border-color .15s ease,color .15s ease}
 .btn-p{background:var(--accent-deep);color:var(--on-accent)}
@@ -337,6 +338,7 @@ body::after{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;bac
 .term-bar .ttl{margin-left:10px;font-size:11.5px;color:var(--term-dim);letter-spacing:.3px}
 .term-body{padding:14px 16px 16px;font-size:13px;line-height:1.8;overflow-x:auto;white-space:pre;color:var(--term-dim)}
 .t-cmd{color:var(--term-fg);font-weight:600}
+.t-hint{color:var(--term-dim);font-style:italic}
 .cursor{display:inline-block;width:7px;height:14px;background:var(--accent);vertical-align:-2px;margin-left:2px}
 .sec{border-top:1px dashed var(--border);padding:76px 0}
 .pathbar{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);margin-bottom:26px}
@@ -408,7 +410,9 @@ footer{background:var(--bg-2);border-top:1px solid var(--border)}
 @media(max-width:560px){
   .stats{grid-template-columns:repeat(2,1fr)}
   .hero h1{font-size:clamp(30px,9vw,40px)}
-  .links a:not(:first-child){display:none}
+  .links{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;max-width:100%;mask-image:linear-gradient(90deg,#000 calc(100% - 30px),transparent);-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 30px),transparent)}
+  .links::-webkit-scrollbar{display:none}
+  .links a{white-space:nowrap;flex-shrink:0}
   .term-body{font-size:12px}
   .project-top .year{margin-left:0}
   .contact-row{grid-template-columns:auto 1fr;gap:2px 12px}

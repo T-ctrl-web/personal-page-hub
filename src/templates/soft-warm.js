@@ -4,6 +4,7 @@
  * 适合生活方式博主、独立品牌主理人、心理与生活类内容创作者。
  */
 import { esc } from '../engine/export.js'
+import { avatarHtml, avatarGeoCss } from './avatar.js'
 
 export default {
   id: 'soft-warm',
@@ -20,6 +21,7 @@ export default {
       group: '基本信息',
       fields: [
         { key: 'name', label: '姓名' },
+        { key: 'avatar', label: '头像图片 URL', hint: '选填；填了显示照片，留空显示抽象几何头像' },
         { key: 'role', label: '一句话定位' },
         { key: 'badge', label: '徽章/标签', hint: '如：独立品牌主理人 · 现居成都' },
         { key: 'desc', label: '自我介绍（Hero）', type: 'textarea' },
@@ -91,6 +93,7 @@ export default {
 
   defaults: {
     name: '林屿安',
+    avatar: '',
     role: '「屿间」咖啡 · 独立品牌主理人',
     badge: '独立品牌主理人 · 现居成都',
     desc: '我在成都一条老巷子里开了家叫「屿间」的咖啡店，也做一些生活方式的内容。相信一杯好咖啡、一盏暖灯、一段慢下来的时间，足以安顿一天的疲惫。',
@@ -131,7 +134,6 @@ export default {
 
   render(d) {
     const terms = (arr) => (arr || []).map((t) => `<span class="tag">${esc(t)}</span>`).join('')
-    const initial = esc((d.name || '').charAt(0))
     return `
   <nav class="nav">
     <div class="container nav-inner">
@@ -153,7 +155,7 @@ export default {
           <a class="btn" href="#contact">来店里坐坐</a>
         </div>
         <div class="hero-art" aria-hidden="true">
-          <div class="orb"><span>${initial}</span></div>
+          <div class="orb">${avatarHtml(d.avatar, d.name, 'orb-avatar')}</div>
           <span class="dot dot-sage"></span>
           <span class="dot dot-clay"></span>
           <div class="blob"></div>
@@ -242,7 +244,7 @@ export default {
   },
 
   css: `
-:root{--bg:#FAF3EC;--bg-2:#F4ECE2;--card:#FFFDF9;--fg:#3E3529;--fg-2:#6B5C4B;--muted:#7A6A58;--primary:#A05E2E;--primary-soft:#C08552;--primary-ink:#8A4F23;--sage:#8A9B7A;--sage-soft:#E7EBDE;--border:#EADFD2;--on-primary:#FFFDF9;--on-primary-2:#F9EFE3;--radius:18px;--radius-lg:24px;--radius-xl:32px;--shadow-sm:0 1px 2px rgba(122,84,44,.04),0 2px 8px rgba(122,84,44,.05);--shadow:0 18px 44px rgba(122,84,44,.10),0 4px 14px rgba(122,84,44,.06);--nav-bg:rgba(250,243,236,.92);--badge-bg:rgba(255,253,249,.55);--badge-border:rgba(138,79,35,.28);--tag-bg:rgba(255,253,249,.6);--blob-bg:rgba(138,155,122,.32);--btn-hover-bg:#FFFFFF;--hero-bg:linear-gradient(140deg,#F8EDDC 0%,#F4E7D2 55%,#EFDEC3 100%);--orb-bg:linear-gradient(160deg,#C08552 0%,#A05E2E 100%);--contact-bg:linear-gradient(150deg,#B0713F 0%,#9A5A2E 60%,#8A4F23 100%);--font-display:Georgia,'Times New Roman','Songti SC','Noto Serif SC','SimSun',serif;--font-sans:'Inter','PingFang SC','Microsoft YaHei',system-ui,sans-serif;--font-mono:'JetBrains Mono',ui-monospace,Consolas,monospace}
+:root{--bg:#FAF3EC;--bg-2:#F4ECE2;--card:#FFFDF9;--fg:#3E3529;--fg-2:#6B5C4B;--muted:#7A6A58;--primary:#A05E2E;--primary-soft:#C08552;--primary-ink:#8A4F23;--sage:#8A9B7A;--sage-soft:#E7EBDE;--border:#EADFD2;--on-primary:#FFFDF9;--on-primary-2:#F9EFE3;--radius:18px;--radius-lg:24px;--radius-xl:32px;--shadow-sm:0 1px 2px rgba(122,84,44,.04),0 2px 8px rgba(122,84,44,.05);--shadow:0 18px 44px rgba(122,84,44,.10),0 4px 14px rgba(122,84,44,.06);--nav-bg:rgba(250,243,236,.92);--badge-bg:rgba(255,253,249,.55);--badge-border:rgba(138,79,35,.28);--tag-bg:rgba(255,253,249,.6);--blob-bg:rgba(138,155,122,.18);--btn-hover-bg:#FFFFFF;--hero-bg:linear-gradient(140deg,#F8EDDC 0%,#F4E7D2 55%,#EFDEC3 100%);--orb-bg:linear-gradient(160deg,#C08552 0%,#A05E2E 100%);--contact-bg:linear-gradient(150deg,#B0713F 0%,#9A5A2E 60%,#8A4F23 100%);--font-display:Georgia,'Times New Roman','Songti SC','Noto Serif SC','SimSun',serif;--font-sans:'Inter','PingFang SC','Microsoft YaHei',system-ui,sans-serif;--font-mono:'JetBrains Mono',ui-monospace,Consolas,monospace}
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
 body{font-family:var(--font-sans);font-size:16px;line-height:1.75;background:var(--bg);color:var(--fg);-webkit-font-smoothing:antialiased}
@@ -261,20 +263,21 @@ a{color:inherit;text-decoration:none}
 .hero-card{display:grid;grid-template-columns:1.35fr .65fr;gap:40px;align-items:center;background:var(--hero-bg);border:1px solid var(--border);border-radius:var(--radius-xl);padding:64px 56px;box-shadow:var(--shadow)}
 .hero-text{position:relative;z-index:1}
 .badge{display:inline-block;font-size:13px;letter-spacing:1.5px;color:var(--primary-ink);border:1px solid var(--badge-border);background:var(--badge-bg);padding:6px 16px;border-radius:999px;margin-bottom:26px}
-.hero h1{font-family:var(--font-display);font-size:clamp(42px,6vw,64px);line-height:1.1;letter-spacing:.5px;color:var(--fg)}
+.hero h1{font-family:var(--font-display);font-size:clamp(42px,6vw,64px);line-height:1.2;letter-spacing:.5px;color:var(--fg);animation:fadeUp .7s ease-out both}
 .hero h1 .role{display:block;font-family:var(--font-sans);font-size:.4em;font-weight:600;color:var(--primary-ink);margin-top:16px;letter-spacing:1px}
-.lead{color:var(--fg-2);font-size:17px;line-height:1.85;max-width:36em;margin-top:22px}
+.lead{color:var(--fg-2);font-size:17px;line-height:1.85;max-width:28em;margin-top:22px;animation:fadeUp .7s ease-out .2s both}
 .chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
 .tag{font-size:13px;color:var(--fg-2);border:1px solid var(--border);background:var(--tag-bg);padding:5px 14px;border-radius:999px}
 .btn{display:inline-block;background:var(--primary);color:var(--on-primary);font-size:15px;font-weight:600;padding:14px 30px;border-radius:999px;border:1px solid transparent;box-shadow:var(--shadow-sm);margin-top:34px;transition:transform .18s ease,background .18s ease,box-shadow .18s ease}
 .btn:hover{background:var(--primary-ink);transform:translateY(-2px);box-shadow:var(--shadow)}
 .hero-art{position:relative;height:280px}
 .orb{position:absolute;top:22px;right:30px;width:176px;height:176px;border-radius:50%;background:var(--orb-bg);box-shadow:var(--shadow);display:flex;align-items:center;justify-content:center}
-.orb span{font-family:var(--font-display);font-size:64px;color:var(--on-primary)}
+.orb-avatar{--geo-a:#E8C9A8;--geo-b:#C08552;--geo-c:#8A4F23;width:100%;height:100%;border-radius:50%}
 .dot{position:absolute;border-radius:50%}
-.dot-sage{width:22px;height:22px;background:var(--sage);top:64px;left:14px}
-.dot-clay{width:13px;height:13px;background:var(--primary-soft);bottom:52px;right:14px}
-.blob{position:absolute;bottom:26px;left:6px;width:118px;height:58px;border-radius:22px;background:var(--blob-bg);transform:rotate(-8deg)}
+.dot-sage{width:16px;height:16px;background:var(--sage);opacity:.65;top:64px;left:14px}
+.dot-clay{width:10px;height:10px;background:var(--primary-soft);opacity:.7;bottom:52px;right:14px}
+.blob{position:absolute;bottom:26px;left:6px;width:118px;height:58px;border-radius:50%;background:var(--blob-bg);filter:blur(1px);box-shadow:0 12px 24px rgba(138,155,122,.16);transform:rotate(-8deg)}
+${avatarGeoCss('orb-avatar')}
 .sec{padding:88px 0}
 .sec-head{margin-bottom:42px;max-width:680px}
 .sec-kicker{display:block;font-size:12.5px;font-weight:600;letter-spacing:2.5px;color:var(--primary-ink);margin-bottom:12px}
@@ -318,7 +321,6 @@ footer{padding:38px 0 50px;text-align:center;font-size:13px;color:var(--muted)}
   .hero-card{grid-template-columns:1fr;gap:8px;padding:48px 36px}
   .hero-art{position:static;height:auto;display:flex;justify-content:center;margin-bottom:26px;order:-1}
   .orb{position:static;width:112px;height:112px;border-radius:50%}
-  .orb span{font-size:40px}
   .dot,.blob{display:none}
   .about-grid{grid-template-columns:1fr;gap:40px}
   .services{grid-template-columns:1fr}
@@ -326,7 +328,9 @@ footer{padding:38px 0 50px;text-align:center;font-size:13px;color:var(--muted)}
   .work-num{display:none}
   .life-card{padding:44px 34px}
   .contact-card{padding:56px 32px}
-  .links a:not(:first-child):not(:nth-child(2)){display:none}
+  .links{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;max-width:100%;mask-image:linear-gradient(90deg,#000 calc(100% - 30px),transparent);-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 30px),transparent)}
+  .links::-webkit-scrollbar{display:none}
+  .links a{white-space:nowrap;flex-shrink:0}
 }
 @media(max-width:560px){
   .hero{padding:28px 0 8px}

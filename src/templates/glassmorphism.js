@@ -309,9 +309,9 @@ export default {
 
   css: `
 :root{
-  --bg:#0B0E1A;--fg:#F1F3FB;--fg-2:#C6CBDD;--muted:#8F97B5;
+  --bg:#0B0E1A;--fg:#F1F3FB;--fg-2:#CDD2E6;--muted:#A5AEC9;
   --primary:#A78BFA;--primary-2:#8B5CF6;--cyan:#67E8F9;--pink:#F0ABFC;
-  --glass:rgba(255,255,255,.06);--glass-2:rgba(255,255,255,.09);--glass-hover:rgba(255,255,255,.11);--glass-deep:rgba(255,255,255,.04);
+  --glass:rgba(255,255,255,.09);--glass-2:rgba(255,255,255,.09);--glass-hover:rgba(255,255,255,.11);--glass-deep:rgba(255,255,255,.04);
   --nav-bg:rgba(11,14,26,.62);
   --border:rgba(255,255,255,.16);--border-soft:rgba(255,255,255,.08);--border-strong:rgba(255,255,255,.26);
   --highlight:rgba(255,255,255,.10);
@@ -345,9 +345,10 @@ body::after{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;bac
   radial-gradient(5px 5px at 85% 40%,rgba(103,232,249,.4),transparent 70%),
   radial-gradient(5px 5px at 28% 80%,rgba(167,139,250,.38),transparent 70%)}
 /* 玻璃卡基类：半透明磨砂 + 背景模糊 + 细描边 + 顶部高光 + 柔和阴影 */
-.glass{background:var(--glass);border:1px solid var(--border);border-radius:var(--radius);
+.glass{background:linear-gradient(rgba(13,17,32,.35),rgba(13,17,32,.35)),var(--glass);border:1px solid var(--border);border-radius:var(--radius);
   backdrop-filter:blur(20px) saturate(140%);-webkit-backdrop-filter:blur(20px) saturate(140%);
   box-shadow:var(--shadow-card),inset 0 1px 0 var(--highlight);
+  text-shadow:0 1px 2px rgba(0,0,0,.25);
   transition:transform var(--t-med) var(--ease),border-color var(--t-med),background var(--t-med)}
 .glass:hover{border-color:var(--border-strong)}
 /* 导航：吸顶玻璃条 */
@@ -373,9 +374,9 @@ body::after{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;bac
   border:1px solid var(--border);background:var(--glass-deep);padding:6px 14px;border-radius:var(--radius-pill)}
 .badge-dot{width:7px;height:7px;border-radius:50%;background:var(--cyan);box-shadow:var(--dot-glow-c);animation:breathe 2.2s ease-in-out infinite}
 @keyframes breathe{0%,100%{opacity:1}50%{opacity:.4}}
-.hero h1{font-size:clamp(42px,6.4vw,64px);font-weight:800;line-height:1.08;letter-spacing:-1.5px;margin:20px 0 6px}
-.role{font-size:clamp(17px,2vw,20px);color:var(--primary);font-weight:600;letter-spacing:.3px}
-.desc{margin-top:16px;color:var(--fg-2);font-size:16px;line-height:1.85;max-width:44em}
+.hero h1{font-size:clamp(42px,6.4vw,64px);font-weight:800;line-height:1.2;letter-spacing:-.5px;margin:20px 0 6px;animation:fadeUp .7s ease-out both}
+.role{font-size:clamp(17px,2vw,20px);color:var(--primary);font-weight:600;letter-spacing:.3px;animation:fadeUp .7s ease-out both;animation-delay:.12s}
+.desc{margin-top:16px;color:var(--fg-2);font-size:16px;line-height:1.85;max-width:28em;animation:fadeUp .7s ease-out both;animation-delay:.24s}
 .cta-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:30px}
 .btn{display:inline-flex;align-items:center;gap:8px;min-height:46px;padding:0 22px;border-radius:var(--radius-pill);
   font-size:15px;font-weight:600;transition:transform var(--t-fast) var(--ease),box-shadow var(--t-fast),border-color var(--t-fast)}
@@ -402,7 +403,7 @@ body::after{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;bac
 /* 关于 */
 .about-card{padding:clamp(28px,4vw,44px)}
 .about-lead{font-size:clamp(17px,2.2vw,21px);font-weight:600;color:var(--fg);line-height:1.65;max-width:30em;margin-bottom:26px}
-.about-text p{color:var(--fg-2);font-size:16px;line-height:1.85;margin-bottom:16px;max-width:46em}
+.about-text p{color:var(--fg-2);font-size:16px;line-height:1.85;margin-bottom:16px;max-width:32em}
 .about-text p:last-child{margin-bottom:0}
 /* 研究重点：功能玻璃卡片网格 */
 .skills-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
@@ -422,7 +423,7 @@ body::after{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;bac
 .p-meta{margin-bottom:10px}
 .p-year{font-family:var(--font-mono);font-size:12.5px;color:var(--muted)}
 .p-body h3{font-size:clamp(17px,2vw,21px);font-weight:700;margin-bottom:8px;letter-spacing:-.2px}
-.p-desc{font-size:15px;color:var(--fg-2);line-height:1.75;max-width:46em}
+.p-desc{font-size:15px;color:var(--fg-2);line-height:1.75;max-width:32em}
 .p-stack{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
 .stack-chip{font-size:12px;font-family:var(--font-mono);color:var(--cyan);border:1px solid var(--border-soft);
   background:var(--glass);padding:4px 12px;border-radius:var(--radius-pill)}
@@ -438,7 +439,7 @@ body::after{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;bac
 .tl{display:grid;grid-template-columns:170px 1fr;gap:20px}
 .tl-when{font-family:var(--font-mono);font-size:13px;color:var(--primary);padding-top:2px;font-variant-numeric:tabular-nums}
 .tl-body h3{font-size:17px;font-weight:700;margin-bottom:4px}
-.tl-body p{font-size:14px;color:var(--muted);line-height:1.7;max-width:44em}
+.tl-body p{font-size:14px;color:var(--muted);line-height:1.7;max-width:30em}
 /* 联系 */
 .contact-card{padding:clamp(36px,6vw,60px);text-align:center}
 .contact-card h2{font-size:clamp(26px,3.4vw,36px);font-weight:800;letter-spacing:-.5px}
@@ -460,7 +461,9 @@ footer{padding:36px 0 48px;text-align:center;font-size:12.5px;color:var(--muted)
   .skills-grid{grid-template-columns:1fr 1fr}
   .tl{grid-template-columns:1fr;gap:4px}
   .p-row{grid-template-columns:1fr;gap:8px}
-  .links a:not(.cta){display:none}
+  .links{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;max-width:100%;mask-image:linear-gradient(90deg,#000 calc(100% - 30px),transparent);-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 30px),transparent)}
+  .links::-webkit-scrollbar{display:none}
+  .links a{white-space:nowrap;flex-shrink:0}
 }
 @media(max-width:560px){
   .container{padding:0 18px}

@@ -13,6 +13,7 @@
  * - validateRenderBody(renderBody)：语法预检（仅编译不执行，安全）
  */
 import { buildTemplateHtml } from './export.js'
+import { sharedHeadBlock } from '../templates/fonts.js'
 
 /* 渲染器脚本（在 sandbox iframe 内运行；全单引号，避免与父页模板字符串冲突） */
 const RENDERER_SCRIPT = `(function(){
@@ -51,7 +52,10 @@ function jsonSafe(value) {
  */
 export function sandboxHtml(template, data) {
   const task = jsonSafe({ renderBody: template.renderBody, css: template.css, data: data ?? {} })
-  return `<!DOCTYPE html><html><head><meta charset="utf-8"></head><body>
+  return `<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+${sharedHeadBlock()}
+</head><body>
 <script>
 var TASK = ${task};
 ${RENDERER_SCRIPT}

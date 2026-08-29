@@ -168,11 +168,11 @@ a{color:inherit;text-decoration:none}
 .links a{font-size:12px;letter-spacing:2px;color:var(--fg-2);text-transform:uppercase}
 .links a:hover{color:var(--fg)}
 .hero{padding:120px 0 90px;border-bottom:1px solid var(--border)}
-.hero h1{font-size:clamp(56px,10vw,128px);font-weight:800;line-height:.95;letter-spacing:-3px;text-transform:uppercase}
+.hero h1{font-size:clamp(44px,8vw,84px);font-weight:800;line-height:1.18;letter-spacing:-1px;animation:fadeUp .7s ease-out both}
 .hero h1 .en{display:block;font-size:.22em;font-weight:600;letter-spacing:8px;color:var(--muted);margin-top:18px;text-transform:uppercase}
 .hero-grid{display:grid;grid-template-columns:1fr 1.6fr;gap:48px;margin-top:64px;align-items:start}
-.hero-role{font-size:13px;letter-spacing:2px;color:var(--fg-2);text-transform:uppercase;padding-top:6px}
-.hero-desc{font-size:17px;color:var(--fg-2);max-width:34em;line-height:1.9}
+.hero-role{font-size:13px;letter-spacing:2px;color:var(--fg-2);text-transform:uppercase;padding-top:6px;animation:fadeUp .7s ease-out .12s both}
+.hero-desc{font-size:17px;color:var(--fg-2);max-width:28em;line-height:1.9;animation:fadeUp .7s ease-out .2s both}
 .hero-chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:40px}
 .tag{font-size:11px;letter-spacing:1.5px;color:var(--fg-2);border:1px solid var(--border);padding:6px 16px;border-radius:2px;text-transform:uppercase}
 .sec{padding:90px 0}
@@ -188,7 +188,7 @@ a{color:inherit;text-decoration:none}
 .work{display:grid;grid-template-columns:90px 1fr;gap:24px;padding:34px 0;border-bottom:1px solid var(--border)}
 .work-index{font-size:14px;font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums}
 .work h3{font-size:clamp(18px,2.4vw,26px);font-weight:800;letter-spacing:-.5px;margin-bottom:8px}
-.work p{color:var(--fg-2);font-size:15px;max-width:42em}
+.work p{color:var(--fg-2);font-size:15px;max-width:32em}
 .contact-sec{padding:40px 0 90px}
 .contact{display:inline-block;font-size:clamp(20px,3vw,32px);font-weight:700;letter-spacing:-.5px;border-bottom:2px solid var(--fg);padding-bottom:6px}
 .contact:hover{color:var(--fg-2)}
@@ -197,7 +197,9 @@ footer{padding:28px 0 40px;border-top:1px solid var(--border);font-size:12px;col
   .hero{padding:90px 0 60px}
   .hero-grid{grid-template-columns:1fr;gap:24px;margin-top:40px}
   .about-grid{grid-template-columns:1fr;gap:40px}
-  .links a:not(:first-child){display:none}
+  .links{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;max-width:100%;mask-image:linear-gradient(90deg,#000 calc(100% - 30px),transparent);-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 30px),transparent)}
+  .links::-webkit-scrollbar{display:none}
+  .links a{white-space:nowrap;flex-shrink:0}
 }
 @media(max-width:560px){
   .work{grid-template-columns:1fr;gap:10px}

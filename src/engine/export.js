@@ -5,6 +5,7 @@
  * - render(data)：data → body HTML 字符串
  * - buildTemplateHtml(template, data)：data → 完整独立 HTML 文档
  */
+import { sharedHeadBlock } from '../templates/fonts.js'
 
 export function esc(s) {
   return String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]))
@@ -36,6 +37,7 @@ export function buildTemplateHtml(template, data) {
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="${esc(title)}">
 <title>${esc(title)}</title>
+${sharedHeadBlock()}
 <style>${safeCss}</style>
 </head>
 <body>
