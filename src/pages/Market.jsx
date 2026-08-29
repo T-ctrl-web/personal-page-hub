@@ -105,7 +105,9 @@ export default function Market({ nav }) {
       <div className="filters" style={{ marginTop: 12 }}>
         <span className="fl">用途</span>
         {cats.map((c) => <button key={c} className={`chip-btn ${cat === c ? 'active' : ''}`} onClick={() => setCat(c)}>{c}</button>)}
-        <span className="fl" style={{ marginLeft: 14 }}>风格</span>
+      </div>
+      <div className="filters" style={{ marginTop: 8 }}>
+        <span className="fl">风格</span>
         {styles.map((s) => <button key={s} className={`chip-btn ${style === s ? 'active' : ''}`} onClick={() => setStyle(s)}>{s}</button>)}
       </div>
 
