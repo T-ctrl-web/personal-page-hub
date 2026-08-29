@@ -41,7 +41,7 @@ export default function Detail({ routeParam, nav }) {
 
   return (
     <div className="detail-wrap">
-      <PreviewFrame className="preview-frame" template={tpl} data={structuredClone(tpl.defaults)} title={tpl.name} />
+      <PreviewFrame className="preview-frame" template={tpl} data={structuredClone(tpl.defaults)} title={tpl.name} cacheKey={`${tpl.id}|detail`} />
       <div className="detail-info">
         <h2>{tpl.name} {tpl.ai && <span className="chip-btn" style={{ background: 'var(--primary)', color: '#fff', border: 'none', cursor: 'default', verticalAlign: 'middle' }}>AI 生成</span>}</h2>
         <div className="tags"><span>{tpl.category}</span><span>{tpl.style}</span>{tpl.ai && <span style={{ background: 'var(--pink-soft)', color: 'var(--pink-fg)' }}>可编辑 · 可下载</span>}</div>

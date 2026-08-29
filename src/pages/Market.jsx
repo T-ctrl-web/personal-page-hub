@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { allTemplates, countBrokenOutputs, removeAllBrokenOutputs } from '../templates/index.js'
 import { downloadTemplate } from '../engine/export.js'
 import PreviewFrame from '../engine/PreviewFrame.jsx'
+import LazyCover from '../engine/LazyCover.jsx'
 import Icon from '../engine/Icon.jsx'
 import { loadFavorites, toggleFavorite } from '../store.js'
 
@@ -119,9 +120,9 @@ export default function Market({ nav }) {
             onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openDetail(t.id) } }}
           >
             <div className="tpl-cover">
-              <div className="cover-thumb" aria-hidden="true">
-                <PreviewFrame className="thumb-frame" template={t} data={structuredClone(t.defaults)} title={t.name} />
-              </div>
+              <LazyCover className="cover-thumb">
+                <PreviewFrame className="thumb-frame" template={t} data={structuredClone(t.defaults)} title={t.name} cacheKey={`${t.id}|thumb`} />
+              </LazyCover>
               <button
                 className={`fav-btn ${favs.includes(t.id) ? 'on' : ''}`}
                 aria-label={favs.includes(t.id) ? '取消收藏' : '收藏此模板'}
@@ -174,7 +175,7 @@ export default function Market({ nav }) {
                   <button className="btn btn-p btn-sm" onClick={() => { setPreviewId(null); nav(`detail/${t.id}`) }}>使用此模板</button>
                   <button className="btn btn-line btn-sm" style={{ color: '#fff', borderColor: 'var(--on-dark-border)' }} onClick={() => setPreviewId(null)} ref={modalRef} tabIndex={-1} aria-label="关闭预览"><Icon name="close" size={14} /></button>                </div>
               </div>
-              <PreviewFrame style={{ flex: 1, height: 'auto', border: 'none' }} template={t} data={structuredClone(t.defaults)} title={t.name} />
+              <PreviewFrame style={{ flex: 1, height: 'auto', border: 'none' }} template={t} data={structuredClone(t.defaults)} title={t.name} cacheKey={`${t.id}|modal`} />
             </div>
           </div>
         )

@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useDeferredValue, useMemo, useState } from 'react'
 import Editor from '../engine/Editor.jsx'
 import { downloadTemplate } from '../engine/export.js'
 import PreviewFrame from '../engine/PreviewFrame.jsx'
@@ -19,6 +19,8 @@ export default function Edit({ param, nav }) {
   const [data, setData] = useState(() => structuredClone(existing?.data || tpl?.defaults || {}))
   const [name, setName] = useState(existing?.name || (tpl ? `${tpl.name} · 我的版本` : ''))
   const [saved, setSaved] = useState(false)
+  // 预览数据延迟更新：表单输入即时响应，预览 iframe 稍后重建，避免打字卡顿
+  const previewData = useDeferredValue(data)
 
   if (!tpl) return <div className="empty-state"><div className="ring"><Icon name="alert" size={40} /></div>模板不存在</div>
 
@@ -50,7 +52,7 @@ export default function Edit({ param, nav }) {
           <Editor schema={tpl.schema} data={data} onChange={setData} />
         </div>
         <div className="edit-preview">
-          <PreviewFrame className="preview-frame small" template={tpl} data={data} />
+          <PreviewFrame className="preview-frame small" template={tpl} data={previewData} />
         </div>
       </div>
     </div>

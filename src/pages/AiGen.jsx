@@ -164,7 +164,7 @@ export default function AiGen({ nav }) {
                   <button className="btn btn-line" onClick={generate} disabled={busy}><Icon name="refresh" size={15} /> 重新生成</button>
                 </div>
               </div>
-              <PreviewFrame className="preview-frame" template={result} data={structuredClone(result.defaults)} title="AI 模板预览" />
+              <PreviewFrame className="preview-frame" template={result} data={structuredClone(result.defaults)} title="AI 模板预览" cacheKey={`${result.id}|gen`} />
             </div>
           ) : (
             <div className="empty-state">

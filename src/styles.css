@@ -194,17 +194,22 @@ h1, h2, h3, h4 { font-family: var(--font-display); letter-spacing: .2px; }
   overflow: hidden; cursor: pointer; position: relative;
   transition: transform var(--dur-base) var(--ease-out), box-shadow var(--dur-base);
   background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg);
+  /* 离屏卡片跳过渲染/绘制，降低滚动成本（配合 LazyCover 懒加载） */
+  content-visibility: auto;
+  contain-intrinsic-size: auto 430px;
 }
 .tpl-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); border-color: rgba(109,91,255,.35); }
-.tpl-cover { height: 168px; position: relative; overflow: hidden; background: #0E1024; }
-/* 真实模板缩略图（iframe 放大渲染后 scale 缩小） */
+.tpl-cover { height: 168px; position: relative; overflow: hidden; background: var(--ink); }
+/* 真实模板缩略图（iframe 放大渲染后 scale 缩小；320% 平衡清晰度与渲染成本） */
 .cover-thumb { position: absolute; inset: 0; overflow: hidden; transition: filter var(--dur-base); }
 .tpl-card:hover .cover-thumb { filter: brightness(1.06); }
 .thumb-frame {
-  width: 560%; height: 560%;
-  transform: scale(0.178571);
+  width: 320%; height: 320%;
+  transform: scale(0.3125);
   transform-origin: top left;
   border: 0; pointer-events: none; display: block;
+  /* 提示浏览器将 iframe 提升为合成层，滚动时避免逐帧重绘 */
+  will-change: transform;
 }
 .tpl-cover .fav-btn {
   position: absolute; top: 10px; right: 10px; z-index: 3;
